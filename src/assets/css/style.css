@@ -1,0 +1,182 @@
+/* colors
+ roxo escuro - #4E3069
+ roxo claro -  #5C337F
+ verde - #369F64
+ azul claro - #36A498
+ azul escuro - #3682A9 */
+
+.sidebar{
+    /* background-color: #5C337F !important; */
+    background-color: #4E3069 !important;
+}
+
+.footer a,.breadcrumb-item a{
+    color: #3682A9 !important;
+    text-decoration: none;
+}
+
+*{
+    scrollbar-width: thin;
+    scrollbar-color: #5C337F #fff;
+}
+
+*::-webkit-scrollbar {
+    width: 12px;
+}
+  
+*::-webkit-scrollbar-track {
+    background: #fff;
+}
+  
+*::-webkit-scrollbar-thumb {
+    background-color: #5C337F;
+    border-radius: 20px;
+    border: 3px solid #fff;
+}
+
+.img-ad{
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border-radius: 5px;
+}
+
+.img-ad img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 5px 5px 0 0;
+}
+
+.img-ad span{
+    position: relative;
+    top: -95%;
+    left: 5%;
+}
+
+.card-body p{
+    margin-bottom: 0.5rem !important;
+}
+.card-footer a, .card-body a{
+    color: #3682A9 !important;
+    text-decoration: none;
+}
+
+h4.card-title{
+    font-size: 1.2rem;
+    margin: 1rem 1rem 0 1rem;
+}
+
+span.badge{
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+span.s-second{
+    background-color: #3682A9;
+}
+span.s-third{
+    background-color: #36A498;
+}
+
+.img-user img{
+    width: 40px;
+    border-radius:  50%;
+}
+
+.img-user a{
+    margin-left: 1rem;
+}
+
+.carousel-header{
+    height: 450px;
+    position: relative;
+}
+
+.carousel-header img{
+    height: 100%;
+    object-fit: cover;
+}
+
+.carousel-caption{
+    top: 40%;
+}
+.carousel-caption h5,.carousel-caption p{
+    text-align: start;
+}
+
+.destaque article{
+    font-size: 1.2rem;
+}
+
+.col-qs{
+    margin-left: 2rem;
+}
+
+.card-qs{
+    margin-left: 1.3rem;
+}
+
+@media (max-width: 420px){
+    .col-qs{
+        margin-left: 0;
+    }
+
+    .card-qs{
+        margin-left: 0;
+    }
+}
+
+.carousel-esc .carousel-control-prev, .carousel-esc .carousel-control-next{
+    background: #000;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    top: 45%;
+}
+
+.carousel-esc .carousel-control-prev{
+    left: 3%;
+}
+.carousel-esc .carousel-control-next{
+    right: 3%;
+}
+
+.carousel-esc{
+    padding: 0 10%;
+}
+.carousel-esc .carousel-indicators{
+    bottom: -8%;
+}
+
+.carousel-esc .carousel-indicators li{
+    border: 0;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #ddd;
+}
+
+.carousel-esc .carousel-indicators li.active{
+    background: #000000ad !important;
+}
+
+.carousel-esc .card{
+    margin: 1rem 2.6rem;
+}
+
+@media (max-width: 420px){
+    .carousel-esc{
+        padding: 0;
+    }
+    .carousel-esc .card, .destaque-esc .card{
+        margin: 0 0 15px 0;
+    }
+    .carousel-esc .row{
+        margin: 0 !important;
+    }
+    .carousel-esc .carousel-indicators{
+        bottom: -5% !important;
+    }
+}
