@@ -7,7 +7,8 @@ const Troca = React.lazy(() => import('./views/Troca'))
 const Doacao = React.lazy(() => import('./views/Doacao'))
 const Venda = React.lazy(() => import('./views/Venda'))
 const Chat = React.lazy(() => import('./views/Chat'))
-const MeuPerfil = React.lazy(() => import('./views/MeuPerfil'))
+const Perfil = React.lazy(() => import('./views/Perfil'))
+const CadastrarAnuncio = React.lazy(() => import('./views/CadastrarAnuncio'))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -18,7 +19,8 @@ const routes = [
   { path: '/doacao', name: 'Doacao', element: Doacao },
   { path: '/venda', name: 'Venda', element: Venda },
   { path: '/chat', name: 'Chat', element: Chat },
-  { path: '/perfil', name: 'MeuPerfil', element: MeuPerfil },
+  { path: '/perfil', name: 'Meu Perfil', element: Perfil },
+  { path: '/cadastrar-anuncio', name: 'Cadastrar Anuncio', element: CadastrarAnuncio },
 ]
 
 export default routes

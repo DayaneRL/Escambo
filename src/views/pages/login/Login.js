@@ -1,5 +1,5 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React,{useState,useContext} from 'react'
+import { useNavigate ,Link } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -14,9 +14,26 @@ import {
   CRow,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilHome, cilLockLocked, cilUser } from '@coreui/icons'
+import {AuthContext} from '../../../contexts/auth'
 
 const Login = () => {
+  const [email,setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const {login,loadingAuth,user,signed} = useContext(AuthContext);
+  let navigate = useNavigate();
+
+  async function enviar(e){
+    e.preventDefault();
+    if(email!=='' && senha!==''){
+      login(email, senha);
+    }
+  }
+
+  user && (
+    navigate("../dashboard", { replace: true })
+  )
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -25,14 +42,14 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={enviar}>
                     <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <p className="text-medium-emphasis">Faça login na sua conta</p>
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon icon={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput placeholder="Email" autoComplete="username" value={email} onChange={(e)=>setEmail(e.target.value)}/>
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -40,42 +57,48 @@ const Login = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
-                        placeholder="Password"
+                        placeholder="Senha"
                         autoComplete="current-password"
+                        value={senha} onChange={(e)=>setSenha(e.target.value)}
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
-                          Login
+                        <CButton type="submit" color="seconday" className="px-4 color-azul text-white">
+                        {loadingAuth? 'Carregando...':'Login'}
                         </CButton>
                       </CCol>
                       <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
-                          Forgot password?
+                        <CButton color="white" className="px-0 color-link">
+                          Esqueceu a senha?
                         </CButton>
                       </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white bg-primary py-5" style={{ width: '44%' }}>
+              <CCard className="text-white color-primary py-5" style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
-                    <h2>Sign up</h2>
+                    <h2>Cadastre-se</h2>
                     <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                      Faça uma conta na Escambo para fazer parte da comunidade que procura
+                      ajudar as pessoas de uma forma simples.
                     </p>
                     <Link to="/register">
-                      <CButton color="primary" className="mt-3" active tabIndex={-1}>
-                        Register Now!
+                      <CButton color="secondary" className="mt-3 color-azul text-white" active tabIndex={-1}>
+                        Cadastre-se Agora!
                       </CButton>
                     </Link>
                   </div>
                 </CCardBody>
               </CCard>
             </CCardGroup>
+            <div className='text-center mt-2'>
+              <Link to="/" color="white" className="px-0 color-link text-decoration-none">
+                <CIcon icon={cilHome} /> Ir para página principal
+              </Link>              
+            </div>
           </CCol>
         </CRow>
       </CContainer>

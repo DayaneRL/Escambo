@@ -34,6 +34,26 @@
     border: 3px solid #fff;
 }
 
+.color-primary{
+    background: #4E3069 !important;
+}
+.color-secondary{
+    background: #5C337F !important;
+}
+.color-verde{
+    background: #369F64 !important;
+}
+.color-azul{
+    background: #36A498 !important;
+}
+.color-azul-secondary{
+    background: #3682A9 !important;
+}
+
+.color-link{
+    color: #36A498 !important;
+}
+
 .img-ad{
     position: relative;
     width: 100%;

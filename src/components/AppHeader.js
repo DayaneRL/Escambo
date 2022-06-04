@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -13,7 +13,7 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilBell, cilEnvelopeOpen, cilMenu } from '@coreui/icons'
-
+import { AuthContext } from "../contexts/auth";
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 // import { logo } from '../../src/assets/brand/logo'
@@ -22,6 +22,7 @@ import  logo  from '../assets/images/logo2.png'
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const {signed} = useContext(AuthContext);
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -48,18 +49,24 @@ const AppHeader = () => {
         </CHeaderNav>
         <CHeaderNav>
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
-            </CNavLink>
+            {signed && (
+              <CNavLink href="#">
+                <CIcon icon={cilBell} size="lg" />
+              </CNavLink>
+            )}
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
+            {signed && (
+              <CNavLink href="#">
+                <CIcon icon={cilEnvelopeOpen} size="lg" />
+              </CNavLink>
+            )}
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-3">
+          {signed && (
           <AppHeaderDropdown />
+          )}
         </CHeaderNav>
       </CContainer>
       <CHeaderDivider />

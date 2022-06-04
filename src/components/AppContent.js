@@ -1,11 +1,14 @@
-import React, { Suspense } from 'react'
+import React, { Suspense,useContext } from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { CContainer, CSpinner } from '@coreui/react'
+import { AuthContext } from "../contexts/auth";
 
 // routes config
 import routes from '../routes'
 
 const AppContent = () => {
+  const {signed} = useContext(AuthContext);
+  
   return (
     <CContainer lg>
       <Suspense fallback={<CSpinner color="primary" />}>
@@ -18,12 +21,12 @@ const AppContent = () => {
                   path={route.path}
                   exact={route.exact}
                   name={route.name}
-                  element={<route.element />}
+                  element={ <route.element /> }
                 />
               )
             )
           })}
-          {/* <Route path="/" element={<Navigate to="dashboard" replace />} /> */}
+          <Route path="/" element={<Navigate to="dashboard" replace />} />
         </Routes>
       </Suspense>
     </CContainer>

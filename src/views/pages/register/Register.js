@@ -1,4 +1,5 @@
-import React from 'react'
+import React,{useState, useContext} from 'react'
+import { useNavigate, Link  } from 'react-router-dom'
 import {
   CButton,
   CCard,
@@ -10,11 +11,33 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CFormCheck
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilHome, cilLockLocked, cilUser } from '@coreui/icons'
+import {AuthContext} from '../../../contexts/auth'
+import Modal from "../modal"
 
 const Register = () => {
+  const [email,setEmail] = useState('');
+  const [senha, setSenha] = useState('');
+  const [nome, setNome] = useState('');
+  const [ modal, setModal] = useState(false);
+  const [concordo, setConcordo] = useState(false);
+
+  const {cadastro,loadingAuth,user} = useContext(AuthContext);
+  let navigate = useNavigate();
+
+  function enviar(e){
+    e.preventDefault();
+    if(nome !== '' && email !=='' && senha !== ''){
+        cadastro(email, senha, nome);
+    }
+  }
+  user && (
+    navigate("../dashboard", { replace: true })
+  )
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -22,18 +45,18 @@ const Register = () => {
           <CCol md={9} lg={7} xl={6}>
             <CCard className="mx-4">
               <CCardBody className="p-4">
-                <CForm>
-                  <h1>Register</h1>
-                  <p className="text-medium-emphasis">Create your account</p>
+                <CForm onSubmit={enviar}>
+                  <h1>Cadastrar</h1>
+                  <p className="text-medium-emphasis">Crie sua conta</p>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon icon={cilUser} />
                     </CInputGroupText>
-                    <CFormInput placeholder="Username" autoComplete="username" />
+                    <CFormInput placeholder="Nome" autoComplete="nome"  value={nome} onChange={(e)=>setNome(e.target.value)}/>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>@</CInputGroupText>
-                    <CFormInput placeholder="Email" autoComplete="email" />
+                    <CFormInput placeholder="Email" autoComplete="email" value={email} onChange={(e)=>setEmail(e.target.value)}/>
                   </CInputGroup>
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
@@ -41,8 +64,9 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      placeholder="Password"
+                      placeholder="Senha"
                       autoComplete="new-password"
+                      value={senha} onChange={(e)=>setSenha(e.target.value)}
                     />
                   </CInputGroup>
                   <CInputGroup className="mb-4">
@@ -51,19 +75,33 @@ const Register = () => {
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      placeholder="Repeat password"
+                      placeholder="Repetir Senha"
                       autoComplete="new-password"
                     />
                   </CInputGroup>
+                  <div className=''>
+                    <CFormCheck inline type="checkbox" className='m-0' value={concordo} onChange={()=>setConcordo(true)}
+                    label='Declaro que li e concordo com o'/><CButton 
+                    type="submit" color="link" className="color-link text-decoration-none pt-1 ps-1"
+                    onClick={()=>setModal(!modal)}>
+                      termo de uso</CButton>
+                  </div>
                   <div className="d-grid">
-                    <CButton color="success">Create Account</CButton>
+                    <CButton type="submit" color="secondary" disabled={!concordo} className="color-azul text-white">{loadingAuth? 'Carregando...':'Criar conta'}</CButton>
                   </div>
                 </CForm>
               </CCardBody>
             </CCard>
+            <div className='text-center mt-2'>
+              <Link to="/" color="white" className="px-0 color-link text-decoration-none">
+                <CIcon icon={cilHome} /> Ir para página principal
+              </Link>              
+            </div>
           </CCol>
         </CRow>
       </CContainer>
+
+      {modal && (<Modal visible={modal} setVisible={()=>setModal(!modal)}/>)}
     </div>
   )
 }

@@ -8,7 +8,9 @@ import {
   cilHome,
   cilStar,
   cilLoopCircular,
-  cilChart
+  cilChart,
+  cilPlus,
+  cilUser
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -18,6 +20,7 @@ const _nav = [
     name: 'Ínicio',
     to: '/dashboard',
     icon: <CIcon icon={cilHome} customClassName="nav-icon" />,
+    role: 'Normal'
   },
   {
     component: CNavItem,
@@ -28,7 +31,8 @@ const _nav = [
   },
   {
     component: CNavTitle,
-    name: 'Anúncio',
+    name: 'Anúncios',
+    role: 'Normal'
   },
   {
     component: CNavItem,
@@ -39,18 +43,28 @@ const _nav = [
       color: 'inf s-third',
       text: 'NOVO',
     },
+    role: 'Normal'
   },
   {
     component: CNavItem,
     name: 'Doação',
     to: '/doacao',
     icon: <CIcon icon={cilSmile} customClassName="nav-icon" />,
+    role: 'Normal'
   },
   {
     component: CNavItem,
     name: 'Vender',
     to: '/venda',
     icon: <CIcon icon={cilDollar} customClassName="nav-icon" />,
+    role: 'Normal'
+  },
+  {
+    component: CNavItem,
+    name: 'Cadastrar Anúncio',
+    to: '/cadastrar-anuncio',
+    icon: <CIcon icon={cilPlus} customClassName="nav-icon" />,
+    role: 'User'
   },
   {
     component: CNavTitle,
@@ -76,7 +90,7 @@ const _nav = [
   // },
   {
     component: CNavTitle,
-    name: 'Configurações',
+    name: 'Usuário',
     role: 'User',
   },
   {
@@ -87,33 +101,35 @@ const _nav = [
     role: 'User',
   },
   {
-    component: CNavGroup,
-    name: 'Pages',
-    icon: <CIcon icon={cilStar} customClassName="nav-icon" />,
-    role: 'User',
-    items: [
+    component: CNavTitle,
+    name: 'Convidado',
+    // icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
+    role: 'Guest',
+  },
       {
         component: CNavItem,
         name: 'Login',
+        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
         to: '/login',
+        role: 'Guest',
       },
       {
         component: CNavItem,
-        name: 'Register',
+        name: 'Cadastrar-se',
+        icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
         to: '/register',
+        role: 'Guest',
       },
-      {
-        component: CNavItem,
-        name: 'Error 404',
-        to: '/404',
-      },
-      {
-        component: CNavItem,
-        name: 'Error 500',
-        to: '/500',
-      },
-    ],
-  },
+      // {
+      //   component: CNavItem,
+      //   name: 'Error 404',
+      //   to: '/404',
+      // },
+      // {
+      //   component: CNavItem,
+      //   name: 'Error 500',
+      //   to: '/500',
+      // },
 ]
 
 export default _nav
