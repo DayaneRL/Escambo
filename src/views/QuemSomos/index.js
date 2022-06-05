@@ -10,8 +10,7 @@ import diego from '../../assets/images/etm_diego.jpg'
 const QuemSomos = () => {
     return(
         <>
-        <CCard>
-            {/* <CCardHeader>Quem somos</CCardHeader> */}
+        <CCard className="mb-4">
             <CCardBody>
                 <h4 className="text-center mt-2 mb-4">QUEM SOMOS</h4>
                

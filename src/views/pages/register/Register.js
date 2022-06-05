@@ -87,7 +87,7 @@ const Register = () => {
                       termo de uso</CButton>
                   </div>
                   <div className="d-grid">
-                    <CButton type="submit" color="secondary" disabled={!concordo} className="color-azul text-white">{loadingAuth? 'Carregando...':'Criar conta'}</CButton>
+                    <CButton type="button" onClick={enviar} color="secondary" disabled={!concordo} className="color-azul text-white">{loadingAuth? 'Carregando...':'Criar conta'}</CButton>
                   </div>
                 </CForm>
               </CCardBody>

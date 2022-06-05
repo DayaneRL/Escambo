@@ -186,6 +186,59 @@ span.s-third{
     margin: 1rem 2.6rem;
 }
 
+.chat-area{
+    min-height: 300px;
+    background: #cccccc5e;
+}
+
+.chat{
+    list-style: none;
+    background: none;
+    margin: 0;
+    padding: 0 0 10px 0;
+    margin-bottom: 20px;
+}
+.chat li{
+    padding: 0.5rem;
+    overflow: hidden;
+    display: flex;
+}
+.self{
+    justify-content: end;
+    align-items: end;
+}
+.self .msg{
+    border-bottom-right-radius: 0px !important;
+}
+.other{
+    justify-content: start;
+    align-items: start;
+}
+.other .msg{
+    border-bottom-left-radius: 0px !important;
+}
+.msg{
+    order: 1;
+    box-shadow: 1px 2px 0px #d4d4d4;
+    background: white;
+    min-width: 50px;
+    padding: 10px;
+    border-radius: 10px;
+}
+.msg span{
+    color: #969898;
+}
+.msg p{
+    font-size: 0.8rem;
+    margin: 0 0 0.2rem 0;
+    color: #777;
+}
+
+.imagem-logo{
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
 @media (max-width: 420px){
     .carousel-esc{
         padding: 0;

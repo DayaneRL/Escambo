@@ -2,6 +2,7 @@ import React, { useState,useContext } from "react";
 import { CCard, CCardBody, CRow,  CCol, CInputGroup,CInputGroupText,CFormInput, CFormTextarea,CFormSelect,CFormLabel, CButton } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
 import { cilClock, cilJustifyLeft, cilList, cilText } from "@coreui/icons";
+import firebase from '../../services/firebaseConn';
 import { AuthContext } from "../../contexts/auth";
 import { toast } from "react-toastify";
 
@@ -12,7 +13,7 @@ const CadastrarAnuncio = () =>{
     const [tipo, setTipo] =useState(['Troca','Doação', 'Venda']);
     const [tipoSelected, setTipoSelected] =useState('');
     const [imagem, setImagem] =useState('');
-    const [imagemUrl,setImagemUrl] = useState(null);
+    // const [imagemUrl,setImagemUrl] = useState(null);
     const [saveButton, setSaveButton] = useState(true);
 
     const {user} = useContext(AuthContext);
@@ -22,7 +23,7 @@ const CadastrarAnuncio = () =>{
         if(titulo!=='' && descricao!=='' && tempo !=='' && tipoSelected !== '' && imagem !==''){
             setSaveButton(false);
 
-            await firebase.firestore().collection('anuncio')
+            await firebase.firestore().collection('anuncios')
             .add({
                 created_at: new Date(),
                 titulo: titulo,
@@ -33,8 +34,8 @@ const CadastrarAnuncio = () =>{
                 user_id: user.uid
             })
             .then((value)=>{
-                toast.success('Anuncio criado com sucesso');
-                if(imagem){  uploadImage(value.id, null); }
+                if(imagem){  uploadImage(value.id); }
+                toast.success(`Anuncio de ${tipoSelected} criado com sucesso`);
                 limpaCampos();
             })
             .catch((error)=>{
@@ -53,11 +54,14 @@ const CadastrarAnuncio = () =>{
         setTitulo('');
         setDescricao('');
         setTempo('');
-        setTipoSelected('');
-        setImagemUrl(null);
+        setTipo('');
+        setTipoSelected(0);
+        setImagem('');
+        // setImagemUrl(null);
     }
 
     async function uploadImage(anuncio_id){
+        
         await firebase.storage()
         .ref(`images/anuncio/${anuncio_id}/${imagem.name}`)
         .put(imagem)
@@ -66,18 +70,14 @@ const CadastrarAnuncio = () =>{
             await firebase.storage().ref(`images/anuncio/${anuncio_id}`)
                 .child(imagem.name).getDownloadURL()
                 .then(async (url)=>{
-                    await firebase.firestore().collection('anuncio').doc(anuncio_id)
+                    await firebase.firestore().collection('anuncios').doc(anuncio_id)
                         .update({
                             imagem: url
                         })
-                
-                    if(imagemPostId!==null && url!==imagemPostId){ //apaga a imagem anterior
-                        await firebase.storage().refFromURL(`${imagemPostId}`).delete();
-                    }
                 })
            
             setImagem(null);
-            setImagemUrl(null);
+        //     setImagemUrl(null);
         })
     }
 
@@ -87,7 +87,7 @@ const CadastrarAnuncio = () =>{
             const image = e.target.files[0];
             if(image.type === 'image/jpeg'||image.type === 'image/png'){
                 setImagem(image);
-                setImagemUrl(URL.createObjectURL(e.target.files[0]));
+    //             setImagemUrl(URL.createObjectURL(e.target.files[0]));
             }else{
                 toast.error('Envie uma imagem tipo png ou jpeg');
                 setImagem(null);
@@ -100,8 +100,8 @@ const CadastrarAnuncio = () =>{
       <>
         <CCard className="mb-4 p-3">
             <div className="text-center mt-2">
-                <h2> Cadastra Anuncio </h2>
-                <p className="text-medium-emphasis">Cadastre um anuncio para sua peça</p>
+                <h2> Cadastrar Anuncio </h2>
+                <p className="text-medium-emphasis">Cadastre um anuncio para trocar, doar ou vender sua peça</p>
             </div>
                     
             <CCardBody>
@@ -112,7 +112,7 @@ const CadastrarAnuncio = () =>{
                             <CInputGroupText>
                                 <CIcon icon={cilText} />
                             </CInputGroupText>
-                            <CFormInput placeholder="Placa de Vídeo" value={titulo} onChange={(e)=>setTitulo(e.target.value)}/>
+                            <CFormInput placeholder="Ex: Placa de Vídeo" value={titulo} onChange={(e)=>setTitulo(e.target.value)}/>
                         </CInputGroup>
                     </CCol>
                     <CCol md={12}>
@@ -121,7 +121,7 @@ const CadastrarAnuncio = () =>{
                             <CInputGroupText>
                                 <CIcon icon={cilJustifyLeft} />
                             </CInputGroupText>
-                            <CFormTextarea placeholder="Placa de vídeo Gainward GeForce RTX 3060, 12GB GDDR6, GHOST Series usada em bom estado pronto pra uso" value={descricao} onChange={(e)=>setDescricao(e.target.value)} rows="3"></CFormTextarea>
+                            <CFormTextarea placeholder="Ex: Placa de vídeo Gainward GeForce RTX 3060, 12GB GDDR6, GHOST Series usada em bom estado pronto pra uso" value={descricao} onChange={(e)=>setDescricao(e.target.value)} rows="3"></CFormTextarea>
                         </CInputGroup>
                     </CCol>
                     <CCol md={4}>
@@ -130,7 +130,7 @@ const CadastrarAnuncio = () =>{
                             <CInputGroupText>
                                 <CIcon icon={cilClock} />
                             </CInputGroupText>
-                            <CFormInput placeholder="1 ano" value={tempo} onChange={(e)=>setTempo(e.target.value)}/>
+                            <CFormInput placeholder="Ex: 1 ano" value={tempo} onChange={(e)=>setTempo(e.target.value)}/>
                         </CInputGroup>
                     </CCol>
                     <CCol md={4}>
@@ -154,10 +154,10 @@ const CadastrarAnuncio = () =>{
                     </CCol>
                     <CCol md={4}>
                         <CFormLabel>Imagem</CFormLabel>
-                        <CFormInput type="file" id="formFile" onChange={handleFile}/>
+                        <CFormInput type="file" id="formFile" onChange={handleFile} value={imagem}/>
                     </CCol>
                 </CRow>
-                <div className="text-end">
+                <div className="text-end mt-4">
                     <CButton color="success text-white" className="m-2" disabled={saveButton === false} onClick={Register}>Cadastrar</CButton>
                     <CButton color="secondary text-white">Cancelar</CButton>
                 </div>

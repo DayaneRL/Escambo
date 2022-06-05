@@ -1,22 +1,97 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { CCard, CCardBody, CRow,CCol,  CCarousel, CCarouselItem,CCarouselCaption, CContainer, CCardHeader } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
 import { cilLoopCircular,  cilDollar, cilSmile } from "@coreui/icons";
+import { Link } from 'react-router-dom'
+import {format} from "date-fns";
+import firebase from "../../services/firebaseConn";
+const url = firebase.firestore().collection('anuncios').limit(3).orderBy('created_at', 'asc');
+const urlTroca = firebase.firestore().collection('anuncios').where('tipo','==','Troca').orderBy('created_at', 'desc');
+
 
 import troca from '../../assets/images/banner/troca_bg1.jpg'
 import componente from '../../assets/images/banner/components_bg.jpg'
 import tech from '../../assets/images/banner/people2.jpg'
 
-import placa from '../../assets/images/tech/placa_video.jpg'
-import monitor from '../../assets/images/tech/monitor.jpg'
-import memoria from '../../assets/images/tech/memoria.jpg'
-import mouse from '../../assets/images/tech/mouse.jpeg'
-import user1 from '../../assets/images/avatars/1.jpg'
-import user2 from '../../assets/images/avatars/6.jpg'
-import user3 from '../../assets/images/avatars/9.jpg'
-import user5 from '../../assets/images/avatars/5.jpg'
+import trocaIMG from '../../assets/images/troca.jpg'
+
+import ESCambo from '../../assets/images/ESCambo.PNG'
+import esc_ambo from '../../assets/images/esc_ambo.PNG'
 
 const Dashboard = () =>{
+  const [anunciosDestaque, setAnunciosDestaque] = useState([]);
+  const [loadingDestaque, setLoadingDestaque] = useState(true);
+  const [anuncios, setAnuncios] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(()=>{
+
+    async function loadAnunciosDestaque(){
+      await url.get()
+      .then((snapshot)=>{
+        updateState(snapshot, 'destaque');
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    }
+    loadAnunciosDestaque();
+
+    async function loadAnunciosTroca(){
+      await urlTroca.get()
+      .then((snapshot)=>{
+        updateState(snapshot, 'troca');
+      })
+      .catch((error)=>{
+        console.log(error);
+      })
+    }
+    loadAnunciosTroca();
+  }, [])
+
+  
+  async function updateState(snapshot, tipo){
+    let lista = [];
+    let contador = 0;
+
+    snapshot.forEach(async (doc)=>{
+      
+      await firebase.firestore().collection('users').doc(doc.data().user_id).get()
+      .then((value)=>{
+        contador+=1;
+        lista.push({
+          id: doc.id,
+          titulo: doc.data().titulo,
+          user_id: doc.data().user_id,
+          descricao: doc.data().descricao,
+          tipo: doc.data().tipo,
+          tempo: doc.data().tempo,
+          imagem: doc.data().imagem,
+          user: value.data(),
+          created_at: doc.data().created_at,
+          createdFormated: format(doc.data().created_at.toDate(), 'dd/MM/yyyy'),
+        })
+
+        if(contador===3){
+          if(tipo==='destaque'){
+            setAnunciosDestaque(anunciosDestaque => [...anunciosDestaque,...lista]);
+            setLoadingDestaque(false);
+            console.log(anunciosDestaque);
+          }else if(tipo==='troca'){
+            setAnuncios(anuncios => [...anuncios,...lista]);
+            setLoading(false);
+          }
+        }
+        
+      })
+
+    })
+  }
+
+  anunciosDestaque && (
+    console.log(anunciosDestaque)
+  )
+
     return(
       <>
         <CCarousel controls indicators>
@@ -44,76 +119,54 @@ const Dashboard = () =>{
         </CCarousel>
 
         <CCard className="mb-4">
-            <CCardBody>
-              <CContainer className="mb-4 ms-md-4 destaque">
-                <h4 className="mb-0 mt-md-2">DESTAQUE</h4>
-                <article className="text-secondary mt-md-2">Confira as últimas peças publicadas.</article>
-              </CContainer>
+          <CCardBody className="p-0 pt-3">
+            <CContainer className="mb-4 ms-md-4 destaque">
+              <h4 className="mb-0 mt-md-2">DESTAQUE</h4>
+              <article className="text-secondary mt-md-2">Confira as últimas peças publicadas.</article>
+            </CContainer>
+            
+            {loadingDestaque && (
+              <div className="text-center">
+                <h4>Carregando...</h4>
+              </div>
+            )}
+            
+            {anunciosDestaque && (
+              <CRow className="p-2 destaque-esc">
+                {anunciosDestaque.map((anuncio, index)=>{
+                  return(
+                    <CCard className="col-md-3 col-xs-12 p-0 ms-md-5 me-md-5" key={index}>
+                      <div className="img-ad">
+                        <img src={anuncio.imagem} alt="..."/>
+                        <span className="badge bg-warning">DESTAQUE</span>
+                      </div>
+                      <h4 className="card-title">{anuncio.titulo}</h4>
+                      <CCardBody>
+                        <p>{anuncio.descricao}</p>
+                        <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span>
+                        <span className="ms-2 badge s-third">
+                          <CIcon icon={cilLoopCircular} /> {anuncio.tipo}
+                        </span>
 
-            <CRow className="p-2 destaque-esc">
-              <CCard className="col-md-3 col-xs-12 p-0 ms-md-5 me-md-5">
-                <div className="img-ad">
-                  <img src={placa} alt="..."/>
-                  <span className="badge bg-warning">DESTAQUE</span>
-                </div>
-                <h4 className="card-title">PLACA DE VÍDEO</h4>
-                <CCardBody>
-                  <p>Placa de vídeo usada </p>
-                  <span className="badge s-second">Tempo de uso: 2 anos</span>
-                  <span className="ms-2 badge s-third">
-                    <CIcon icon={cilLoopCircular} /> Troca
-                  </span>
+                        <hr/>
+                        <div className="img-user">
+                          <img src={anuncio.user.avatarUrl} alt="user"/>
+                          <a href={'/usuarios/'+anuncio.user_id}>{anuncio.user.nome}</a>
+                        </div>
+                      </CCardBody>
+                    </CCard>
+                  )})}
+              </CRow>
+            )}
 
-                  <hr/>
-                  <div className="img-user">
-                    <img src={user1} alt="user"/>
-                    <a href="/">Maria da Silva</a>
-                  </div>
-                </CCardBody>
-              </CCard>
-              <CCard className="col-md-3 col-xs-12 p-0 ms-md-5 me-md-5">
-                <div className="img-ad">
-                  <img src={monitor} alt="..."/>
-                  <span className="badge bg-warning">DESTAQUE</span>
-                </div>
-                <h4 className="card-title">MONITOR</h4>
-                <CCardBody>
-                  <p>20 polegadas</p>
-                  <span className="badge s-second">Tempo de uso: 3 anos</span>
-                  <span className="ms-2 badge s-third">
-                    <CIcon icon={cilDollar} /> Venda
-                  </span>
-                  
-                  <hr/>
-                  <div className="img-user">
-                    <img src={user2} alt="user"/>
-                    <a href="/">Marcos Oliveira</a>
-                  </div>
-                </CCardBody>
-              </CCard>
-              <CCard className="col-md-3 col-xs-12 p-0 ms-md-5 me-md-5">
-                <div className="img-ad">
-                  <img src={memoria} alt="..."/>
-                  <span className="badge bg-warning">DESTAQUE</span>
-                </div>
-                <h4 className="card-title">MEMÓRIA RAM</h4>
-                <CCardBody>
-                  <p>Memória RAM 8gb</p>
-                  <span className="badge s-second">Tempo de uso: 6 meses</span>
-                  <span className="ms-2 badge s-third">
-                    <CIcon icon={cilSmile} /> Doação
-                  </span>
-                  
-                  <hr/>
-                  <div className="img-user">
-                    <img src={user3} alt="user"/>
-                    <a href="/">Lucas Moreira</a>
-                  </div>
-                </CCardBody>
-              </CCard>
-            </CRow>
-
-            <br/><br/><hr/><br/>
+            <br/>
+              <div className="imagem-logo text-center pb-3">
+                <Link to="/quem-somos" color="white" className="color-link text-decoration-none">
+                  <img src={ESCambo} alt="..."/><br/>
+                  <h5 className="color-link">Saiba mais sobre quem somos!</h5>
+                </Link>  
+              </div>
+            <br/>
 
             <CContainer className="mb-4 ms-md-4">
               <h4 className="mb-0 mt-2">ESCAMBO</h4>
@@ -121,128 +174,56 @@ const Dashboard = () =>{
               O escambo é uma transação em que há a troca de mercadorias ou serviços entre as duas partes.
               </article>
             </CContainer>
+              {loading && (
+                <div className="text-center">
+                  <h4>Carregando...</h4>
+                </div>
+              )}
 
-            <CCarousel controls indicators className="carousel-esc mb-md-4 mb-xs-2">
-    
+              {anuncios && (
+                <CCarousel controls indicators className="carousel-esc mb-md-4 mb-xs-2">
                 <CCarouselItem>
                   <CRow>
-                    <CCard className="col-md-3 col-xs-12 p-0 d-none d-md-block">
-                      <div className="img-ad">
-                        <img src={placa} alt="..."/>
-                      </div>
-                      <h4 className="card-title">PLACA DE VÍDEO</h4>
+                    {anuncios.map((anuncio, index)=>{
+                      return(
+                        <CCard className="col-md-3 col-xs-12 p-0 d-none d-md-block" key={index}>
+                          <div className="img-ad">
+                            <img src={anuncio.imagem} alt="..."/>
+                          </div>
+                          <h4 className="card-title">{anuncio.titulo}</h4>
 
-                      <CCardBody>
-                        <p>Placa de vídeo usada </p>
-                        <span className="badge s-second">Tempo de uso:2 anos</span>
-                        <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
+                          <CCardBody>
+                            <p>{anuncio.descricao}</p>
+                            <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span> <br/>
+                            <span className="badge s-third"><CIcon icon={cilLoopCircular} /> {anuncio.tipo}</span>
 
-                        <hr/>
-                        <div className="img-user">
-                          <img src={user1} alt="user"/>
-                          <a href="/">Maria da Silva</a>
-                        </div>
-                      </CCardBody>
-                    </CCard>
-                    <CCard  className="col-md-3 col-xs-12 p-0  d-none d-md-block">
-                      <div className="img-ad">
-                        <img src={placa} alt="..."/>
-                      </div>
-                      <h4 className="card-title">PLACA DE VÍDEO</h4>
-
-                      <CCardBody>
-                        <p>Placa de vídeo usada </p>
-                        <span className="badge s-second">Tempo de uso:2 anos</span>
-                        <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
-
-                        <hr/>
-                        <div className="img-user">
-                          <img src={user1} alt="user"/>
-                          <a href="/">Maria da Silva</a>
-                        </div>
-                      </CCardBody>
-                    </CCard>
-                    <CCard className="col-md-3 col-xs-12 p-0">
-                      <div className="img-ad">
-                        <img src={placa} alt="..."/>
-                      </div>
-                      <h4 className="card-title">PLACA DE VÍDEO</h4>
-
-                      <CCardBody>
-                        <p>Placa de vídeo usada </p>
-                        <span className="badge s-second">Tempo de uso:2 anos</span>
-                        <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
-
-                        <hr/>
-                        <div className="img-user">
-                          <img src={user1} alt="user"/>
-                          <a href="/">Maria da Silva</a>
-                        </div>
-                      </CCardBody>
-                    </CCard>
+                            <hr/>
+                            <div className="img-user">
+                              <img src={anuncio.user.avatarUrl} alt="user"/>
+                              <a href={'/usuarios/'+anuncio.user_id}>{anuncio.user.nome}</a>
+                            </div>
+                          </CCardBody>
+                        </CCard>
+                      )
+                    })}
                   </CRow>
                 </CCarouselItem>
                 <CCarouselItem>
                   <CRow>
-                      <CCard className="col-md-3 p-0  d-none d-md-block">
-                        <div className="img-ad">
-                          <img src={mouse} alt="..."/>
-                        </div>
-                        <h4 className="card-title">MOUSE</h4>
-
-                        <CCardBody>
-                          <p>Mouse HP</p>
-                          <span className="badge s-second">Tempo de uso: 1 ano</span>
-                          <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
-
-                          <hr/>
-                          <div className="img-user">
-                            <img src={user5} alt="user"/>
-                            <a href="/">Luisa de Souza</a>
-                          </div>
-                        </CCardBody>
-                      </CCard>
-                      <CCard className="col-md-3 p-0  d-none d-md-block">
-                        <div className="img-ad">
-                          <img src={mouse} alt="..."/>
-                        </div>
-                        <h4 className="card-title">MOUSE</h4>
-
-                        <CCardBody>
-                          <p>Mouse HP</p>
-                          <span className="badge s-second">Tempo de uso: 1 ano</span>
-                          <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
-
-                          <hr/>
-                          <div className="img-user">
-                            <img src={user5} alt="user"/>
-                            <a href="/">Luisa de Souza</a>
-                          </div>
-                        </CCardBody>
-                      </CCard>
-                      <CCard className="col-md-3 p-0">
-                        <div className="img-ad">
-                          <img src={mouse} alt="..."/>
-                        </div>
-                        <h4 className="card-title">MOUSE</h4>
-
-                        <CCardBody>
-                          <p>Mouse HP</p>
-                          <span className="badge s-second">Tempo de uso: 1 ano</span>
-                          <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
-
-                          <hr/>
-                          <div className="img-user">
-                            <img src={user5} alt="user"/>
-                            <a href="/">Luisa de Souza</a>
-                          </div>
-                        </CCardBody>
-                      </CCard>
+                    <CCard className="col-md-11 col-xs-12 p-0 d-none d-md-block">
+                    <div className="text-center pt-5 pb-5 mt-5 mb-5">
+                      <Link to="/troca" color="white" className="color-link text-decoration-none">
+                      <h1 className="color-link">PRATIQUE</h1>
+                      <img src={esc_ambo} height="170px" width="70%" alt="..."/>
+                      </Link>              
+                    </div>
+                    </CCard>
                   </CRow>
                 </CCarouselItem>
-              
-            </CCarousel>
-
+                </CCarousel>
+              )}
+                 
+              <br/>
             </CCardBody>
         </CCard>
           

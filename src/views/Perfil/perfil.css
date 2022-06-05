@@ -45,7 +45,7 @@
     display: block;
 }
 
-.form-profile input, textarea, select{
+.form-input input{
     margin-bottom: 1em;
     /* font-size: 1.1em; */
     padding: .3em;
@@ -57,7 +57,7 @@
     text-align: center;
 }
 
-.form-profile input:disabled{
+.form-input input:disabled{
     cursor: not-allowed;
 }
 
@@ -74,11 +74,11 @@
 
 
 @media screen and (max-width:450px) {
-    .form-profile input, textarea, select{
+    .form-input input{
         max-width: 350px;
         min-width: 300px;    
     }
-    .form-profile button{
+    .form-input button{
         max-width: 350px;
         min-width: 300px; 
     }
