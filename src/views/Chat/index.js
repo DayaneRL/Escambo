@@ -34,7 +34,7 @@ const Chat = () => {
     const {user} = useContext(AuthContext);
 
     return(
-        <CRow className="justify-content-center">
+        <CRow className="justify-content-center mb-4">
             <CCol md={12} lg={10}>
                 <CCard className="">
                 <CCardBody  className="mb-4 p-3">

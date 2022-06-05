@@ -63,13 +63,17 @@ const MeusAnuncios = () => {
         setAnuncios(anuncios => [...anuncios,...lista]);
         setLoading(false);
     })
+
+    if(snapshot.size===0){
+        setLoading(false);
+    }
   }
 
     return(
         <CCard className="mb-4 p-3">
             
             <CContainer className="mb-4 mt-4 ms-md-4 text-center">
-            <h4 className="mb-0 mt-2">MEUS ANUNCIOS</h4>
+            <h4 className="mb-0 mt-2">MEUS ANÚNCIOS</h4>
             <hr/>
             </CContainer>
 
@@ -85,7 +89,7 @@ const MeusAnuncios = () => {
                     <CTableHeaderCell scope="col">#</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Titulo</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Tipo</CTableHeaderCell>
-                    <CTableHeaderCell scope="col">Data Criação</CTableHeaderCell>
+                    <CTableHeaderCell scope="col" className="d-none d-md-block">Data Criação</CTableHeaderCell>
                     <CTableHeaderCell scope="col">Ações</CTableHeaderCell>
                     </CTableRow>
                 </CTableHead>
@@ -96,9 +100,9 @@ const MeusAnuncios = () => {
                             <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
                             <CTableDataCell>{item.titulo}</CTableDataCell>
                             <CTableDataCell>{item.tipo}</CTableDataCell>
-                            <CTableDataCell>{item.createdFormated}</CTableDataCell>
+                            <CTableDataCell className="d-none d-md-block">{item.createdFormated}</CTableDataCell>
                             <CTableDataCell>
-                                <Link to="/" color="secondary" className="btn color-azul text-white text-decoration-none">
+                                <Link to={'/anuncio/'+item.id} color="secondary" className="btn color-azul text-white text-decoration-none">
                                     <CIcon icon={cilMagnifyingGlass} /> Visualizar
                                 </Link>  
                             </CTableDataCell>

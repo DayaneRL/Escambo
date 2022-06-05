@@ -6,7 +6,7 @@ import { CBadge } from '@coreui/react'
 
 export const AppSidebarNav = ({ items }) => {
   const location = useLocation()
-  const {signed} = useContext(AuthContext);
+  const {signed, user} = useContext(AuthContext);
 
   const navLink = (name, icon, badge) => {
     return (
@@ -27,7 +27,8 @@ export const AppSidebarNav = ({ items }) => {
     const Component = component
     return (
       <div key={index}>
-        {((role==='User' && signed) || (role==='Guest' && !signed) || role==='Normal') && (
+        {((role==='User' && signed) || (role==='Guest' && !signed) || role==='Normal' ||
+          (user && role==='Admin' && user.email==="admin@admin.com") ) && (
           <Component
           {...(rest.to &&
             !rest.items && {

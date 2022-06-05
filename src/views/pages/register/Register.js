@@ -82,12 +82,13 @@ const Register = () => {
                   <div className=''>
                     <CFormCheck inline type="checkbox" className='m-0' value={concordo} onChange={()=>setConcordo(true)}
                     label='Declaro que li e concordo com o'/><CButton 
-                    type="submit" color="link" className="color-link text-decoration-none pt-1 ps-1"
+                    type="button" color="link" className="color-link text-decoration-none pt-1 ps-1"
                     onClick={()=>setModal(!modal)}>
                       termo de uso</CButton>
                   </div>
                   <div className="d-grid">
-                    <CButton type="button" onClick={enviar} color="secondary" disabled={!concordo} className="color-azul text-white">{loadingAuth? 'Carregando...':'Criar conta'}</CButton>
+                    <CButton type="button" onClick={()=>enviar} color="secondary" disabled={!concordo} className="color-azul text-white">{loadingAuth? 'Carregando...':'Criar conta'}</CButton>
+                    <Link to="/login" color="white" className="mt-1 p-2 color-link border text-center text-decoration-none">Login</Link>
                   </div>
                 </CForm>
               </CCardBody>

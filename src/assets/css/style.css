@@ -150,6 +150,10 @@ span.s-third{
     width: 400px;
 }
 
+.relatorio-border{
+    border-left: 1px solid #ddd;
+}
+
 @media (max-width: 420px){
     .col-qs{
         margin-left: 0;
@@ -157,6 +161,11 @@ span.s-third{
 
     .card-qs{
         margin-left: 0;
+    }
+
+    .img-anuncio-show{
+        min-width: 280px;
+        max-width: 280px;
     }
 }
 

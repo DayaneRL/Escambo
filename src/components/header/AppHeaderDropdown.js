@@ -41,7 +41,7 @@ const AppHeaderDropdown = () => {
       <CDropdownMenu className="pt-0" placement="bottom-end">
         <CDropdownHeader className="bg-light fw-semibold py-2">Conta</CDropdownHeader>
         
-        <CDropdownItem href="#">
+        <CDropdownItem href="#/chat">
           <CIcon icon={cilEnvelopeOpen} className="me-2" />
           Mensagens
           <CBadge color="success" className="ms-2">
@@ -50,11 +50,11 @@ const AppHeaderDropdown = () => {
         </CDropdownItem>
         
         <CDropdownHeader className="bg-light fw-semibold py-2">Configurações</CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem href="#/perfil">
           <CIcon icon={cilUser} className="me-2" />
           Perfil
         </CDropdownItem>
-        <CDropdownItem href="#">
+        <CDropdownItem href="#/perfil">
           <CIcon icon={cilSettings} className="me-2" />
           Configurações
         </CDropdownItem>

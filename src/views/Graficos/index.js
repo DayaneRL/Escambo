@@ -7,15 +7,20 @@ import {
   CDropdownItem,
   CDropdownToggle,
   CWidgetStatsA,
+  CCard,
+  CCardBody,
+  CButton,
+  CButtonGroup,
 } from '@coreui/react'
 import { getStyle } from '@coreui/utils'
-import { CChartBar, CChartLine } from '@coreui/react-chartjs'
+import { CChart, CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
-import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
+import { cilArrowBottom, cilArrowTop, cilOptions, cilCloudDownload } from '@coreui/icons'
 
 
 const Graficos = () => {
     return(
+        <>
         <CRow>
             <CCol sm={6} lg={3}>
                 <CWidgetStatsA
@@ -351,6 +356,70 @@ const Graficos = () => {
                 />
             </CCol>
         </CRow>
+
+        <CCard className='mb-4'>
+            <CCardBody>
+                <CRow>
+                    <CCol sm={5} className="mt-3">
+                        <h3 id="traffic" className="card-title mb-0">
+                            RELATÓRIOS
+                        </h3>
+                        <div className="small text-medium-emphasis">Maio - Junho 2022</div>
+                    </CCol>
+                    <CCol sm={7} className="d-none d-md-block mt-3">
+                        <CButton color="primary" className="float-end">
+                            <CIcon icon={cilCloudDownload} />
+                        </CButton>
+                        <CButtonGroup className="float-end me-3">
+                            {['Dia', 'Mês', 'Ano'].map((value) => (
+                            <CButton
+                                color="outline-secondary"
+                                key={value}
+                                className="mx-0"
+                                active={value === 'Mês'}
+                            >
+                                {value}
+                            </CButton>
+                            ))}
+                        </CButtonGroup>
+                    </CCol>
+                    <CCol md="2"></CCol>
+                    <CCol md="4" className="text-center p-2">
+                        <h4 className='mt-2 mb-3'> MÉDIA (%)</h4>
+                        <CChart
+                            type="doughnut"
+                            data={{
+                                labels: ['Users', 'Vendas', 'Trocas', 'Doações'],
+                                datasets: [
+                                {
+                                    backgroundColor: ['#321fdb', '#3399ff', '#2eb85c', '#9da5b1'],
+                                    // data: [40, 20, 80, 10],
+                                    data: [12, 40, 54, 14],
+                                },
+                                ],
+                            }}
+                        />
+                    </CCol>
+                    <CCol md="4" className='text-center relatorio-border'>
+                        <h4 className='mt-2 mb-3'> GERAL</h4>
+                      <CChart
+                        type="polarArea"
+                        data={{
+                            labels: ['Inicio de Chat', 'Clique em Anuncio', 'Novos Anuncios', 'Novos Usuários', 'Visualizar Anunciante'],
+                            datasets: [
+                            {
+                                data: [11, 16, 7, 3, 14],
+                                backgroundColor: ['#FF6384', '#4BC0C0', '#FFCE56', '#E7E9ED', '#36A2EB'],
+                            },
+                            ],
+                        }}
+                        />
+                    </CCol>
+                    <CCol md="2"></CCol>
+                </CRow>
+            </CCardBody>
+        </CCard>
+        </>
     )
 }
 

@@ -132,28 +132,33 @@ const Dashboard = () =>{
             )}
             
             {anunciosDestaque && (
-              <CRow className="p-2 destaque-esc">
+              <CRow className="p-4 destaque-esc justify-content-center">
                 {anunciosDestaque.map((anuncio, index)=>{
                   return(
-                    <CCard className="col-md-3 col-xs-12 p-0 ms-md-5 me-md-5" key={index}>
-                      <div className="img-ad">
-                        <img src={anuncio.imagem} alt="..."/>
-                        <span className="badge bg-warning">DESTAQUE</span>
-                      </div>
-                      <h4 className="card-title">{anuncio.titulo}</h4>
+                    <CCard className="col-md-3 col-xs-12 p-0 ms-md-4 me-md-4" key={index}>
+                      <Link to={'/anuncio/'+anuncio.id}>
+                        <div className="img-ad">
+                          <img src={anuncio.imagem} alt="..."/>
+                          <span className="badge bg-warning">DESTAQUE</span>
+                        </div>
+                        <h4 className="card-title text-dark">{anuncio.titulo}</h4>
+                      </Link>
                       <CCardBody>
-                        <p>{anuncio.descricao}</p>
-                        <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span>
-                        <span className="ms-2 badge s-third">
-                          <CIcon icon={cilLoopCircular} /> {anuncio.tipo}
-                        </span>
+                        <Link to={'/anuncio/'+anuncio.id}>
+                          <p className="text-dark">{anuncio.descricao}</p>
+                          <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span>
+                          <span className="ms-2 badge s-third">
+                            <CIcon icon={(anuncio.tipo==="Doação") ? cilSmile : (anuncio.tipo==="Venda" ? cilDollar : cilLoopCircular)} /> {anuncio.tipo}
+                          </span>
+                        </Link>
 
                         <hr/>
                         <div className="img-user">
                           <img src={anuncio.user.avatarUrl} alt="user"/>
-                          <a href={'/usuarios/'+anuncio.user_id}>{anuncio.user.nome}</a>
+                          <Link to={'/usuarios/'+anuncio.user_id}>{anuncio.user.nome}</Link>
                         </div>
                       </CCardBody>
+                      
                     </CCard>
                   )})}
               </CRow>
@@ -162,7 +167,7 @@ const Dashboard = () =>{
             <br/>
               <div className="imagem-logo text-center pb-3">
                 <Link to="/quem-somos" color="white" className="color-link text-decoration-none">
-                  <img src={ESCambo} alt="..."/><br/>
+                  <img src={ESCambo} alt="..." className="w-100"/><br/>
                   <h5 className="color-link">Saiba mais sobre quem somos!</h5>
                 </Link>  
               </div>
@@ -181,28 +186,31 @@ const Dashboard = () =>{
               )}
 
               {anuncios && (
-                <CCarousel controls indicators className="carousel-esc mb-md-4 mb-xs-2">
+                <CCarousel controls indicators className="carousel-esc mb-md-4 mb-xs-2 d-none d-md-block">
                 <CCarouselItem>
-                  <CRow>
+                  <CRow className="justify-content-center">
                     {anuncios.map((anuncio, index)=>{
                       return(
-                        <CCard className="col-md-3 col-xs-12 p-0 d-none d-md-block" key={index}>
-                          <div className="img-ad">
-                            <img src={anuncio.imagem} alt="..."/>
-                          </div>
-                          <h4 className="card-title">{anuncio.titulo}</h4>
-
-                          <CCardBody>
-                            <p>{anuncio.descricao}</p>
-                            <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span> <br/>
-                            <span className="badge s-third"><CIcon icon={cilLoopCircular} /> {anuncio.tipo}</span>
-
-                            <hr/>
-                            <div className="img-user">
-                              <img src={anuncio.user.avatarUrl} alt="user"/>
-                              <a href={'/usuarios/'+anuncio.user_id}>{anuncio.user.nome}</a>
+                        <CCard className="col-md-3 col-xs-12 p-0 d-none d-md-block ms-0" key={index}>
+                          <Link to={'/anuncio/'+anuncio.id}>
+                            <div className="img-ad">
+                              <img src={anuncio.imagem} alt="..."/>
                             </div>
-                          </CCardBody>
+                            <h4 className="card-title text-dark">{anuncio.titulo}</h4>
+                          </Link>
+                            <CCardBody>
+                              <Link to={'/anuncio/'+anuncio.id}>
+                                <p className="text-dark">{anuncio.descricao}</p>
+                                <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span> <br/>
+                                <span className="badge s-third"><CIcon icon={cilLoopCircular} /> {anuncio.tipo}</span>
+                              </Link>
+                              <hr/>
+                              <div className="img-user">
+                                <img src={anuncio.user.avatarUrl} alt="user"/>
+                                <Link to={'/usuarios/'+anuncio.user_id}>{anuncio.user.nome}</Link>
+                              </div>
+                            </CCardBody>
+                          
                         </CCard>
                       )
                     })}

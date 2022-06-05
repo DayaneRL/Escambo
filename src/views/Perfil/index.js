@@ -147,7 +147,7 @@ const Perfil = () =>{
                 </CForm>
             </CCard>
 
-            <CCard>
+            <CCard className="mb-4">
                 <CRow>
                     <CCol md={12} className="text-center p-1">
                     <button className="logout" onClick={sairPerfil}>

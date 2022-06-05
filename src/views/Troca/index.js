@@ -3,7 +3,7 @@ import { CCard, CCardBody, CRow,  CCarousel, CCarouselItem, CContainer } from '@
 import CIcon from "@coreui/icons-react";
 import { cilLoopCircular } from "@coreui/icons";
 import {format} from "date-fns";
-
+import { Link } from "react-router-dom";
 import firebase from "../../services/firebaseConn";
 const url = firebase.firestore().collection('anuncios').where('tipo','==','Troca').orderBy('created_at', 'desc');
 
@@ -79,7 +79,7 @@ const Troca = () =>{
 
     return(
       <>
-        <CCard className="mb-4 p-3">
+        <CCard className="mb-4 p-3 pb-4">
             
             <CContainer className="mb-4 mt-4 ms-md-4 text-center">
               <h4 className="mb-0 mt-2">TROCAS</h4>
@@ -88,30 +88,34 @@ const Troca = () =>{
               </article>
             </CContainer>
 
-            <CCarousel controls indicators className="carousel-esc mb-md-4 mb-xs-2">
+            <CCarousel controls indicators className="carousel-esc mb-md-4 mb-xs-2 mb-5">
 
               {anuncios.map((item, index)=>{
                 return(
                   <CCarouselItem key={index}>
-                    <CRow>
+                    <CRow className="justify-content-center">
 
                     {item.map((anuncio, i)=>{
                       return(
-                        <CCard className="col-md-3 p-0 d-none d-md-block" key={i}>
-                          <div className="img-ad">
-                            <img src={anuncio.imagem} alt="..."/>
-                          </div>
-                          <h4 className="card-title">{anuncio.titulo}</h4>
+                        <CCard className="col-md-3 p-0 ms-1" key={i}>
+                          <Link to={'/anuncio/'+anuncio.id}  className="text-decoration-none">
+                            <div className="img-ad">
+                              <img src={anuncio.imagem} alt="..."/>
+                            </div>
+                            <h4 className="card-title text-dark">{anuncio.titulo}</h4>
+                          </Link>
 
                           <CCardBody>
-                            <p>{anuncio.descricao}</p>
-                            <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
-                            <span className="badge s-third"><CIcon icon={cilLoopCircular} /> {anuncio.tipo}</span>
+                            <Link to={'/anuncio/'+anuncio.id}>
+                              <p className="text-dark">{anuncio.descricao}</p>
+                              <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
+                              <span className="badge s-third"><CIcon icon={cilLoopCircular} /> {anuncio.tipo}</span>
+                            </Link>
 
                             <hr/>
                             <div className="img-user">
                               <img src={anuncio.user.avatarUrl} alt="user"/>
-                              <a href={'/usuarios/'+anuncio.user_id}>{anuncio.user.nome}</a>
+                              <Link to={'/usuarios/'+anuncio.user_id}>{anuncio.user.nome}</Link>
                             </div>
                           </CCardBody>
                         </CCard>

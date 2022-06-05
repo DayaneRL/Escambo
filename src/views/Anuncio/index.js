@@ -1,19 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { CCard, CRow,  CCol, CContainer } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
 import { cilDollar, cilLoopCircular, cilSmile } from "@coreui/icons";
 import { useParams, Link } from "react-router-dom";
+import { AuthContext } from "../../contexts/auth";
 import {format} from "date-fns";
 import firebase from "../../services/firebaseConn";
 
 const Anuncio = () =>{
   const params = useParams();
+  const {user} = useContext(AuthContext);
   const [anuncios, setAnuncios] = useState(null);
   const [loading, setLoading] = useState(true);
   const [iconTipo, setIconTipo] = useState();
 
   useEffect(()=>{
-    console.log(params.id);
 
     async function loadAnuncios(){
       await firebase.firestore().collection('anuncios').doc(params.id).get()
@@ -71,7 +72,7 @@ const Anuncio = () =>{
       <>
         <CCard className="mb-4 p-3">
           <CContainer className="mb-4 mt-4 ms-md-4 text-center">
-            <h4 className="mb-0 mt-2">ANUNCIO</h4>
+            <h4 className="mb-0 mt-2">ANÚNCIO</h4>
           </CContainer>
 
           <CRow className="mb-4">
@@ -96,11 +97,15 @@ const Anuncio = () =>{
                 </Link>
               </div>
               <br/><hr/>
-              <span className="text-secondary">Tem interesse?</span>
-              <br/>
-              <Link to={'/chat'} color="secondary" className="btn color-azul text-white mt-2 text-decoration-none">
-                  Iniciar Chat
-              </Link>
+              {((user && user.uid!==anuncios.user_id)) && (
+                <>
+                  <span className="text-secondary">Tem interesse?</span>
+                  <br/>
+                  <Link to={'/chat'} color="secondary" className="btn color-azul text-white mt-2 text-decoration-none">
+                      Iniciar Chat
+                  </Link>
+                </>
+              )}
             </CCol>
           </CRow>
         </CCard>

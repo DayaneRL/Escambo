@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CCard, CRow, CCardBody, CContainer, CAvatar, CCarousel, CCarouselItem } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
 import { cilDollar, cilLoopCircular, cilSmile } from "@coreui/icons";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {format} from "date-fns";
 import firebase from "../../services/firebaseConn";
 
@@ -123,17 +123,20 @@ const User = () =>{
                       {item.map((anuncio, i)=>{
                         return(
                           <CCard className="col-md-3 p-0 d-none d-md-block" key={i}>
-                            <div className="img-ad">
-                              <img src={anuncio.imagem} alt="..."/>
-                            </div>
-                            <h4 className="card-title">{anuncio.titulo}</h4>
-
+                            <Link to={'/anuncio/'+anuncio.id} className="text-decoration-none">
+                              <div className="img-ad">
+                                <img src={anuncio.imagem} alt="..."/>
+                              </div>
+                              <h4 className="card-title text-dark">{anuncio.titulo}</h4>
+                            </Link>
                             <CCardBody>
-                              <p>{anuncio.descricao}</p>
-                              <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
-                              <span className="badge s-third">
-                                <CIcon icon={(anuncio.tipo==="Doação") ? cilSmile : (anuncio.tipo==="Venda" ? cilDollar : cilLoopCircular)} /> {anuncio.tipo}
-                              </span>
+                              <Link to={'/anuncio/'+anuncio.id}>
+                                <p className="text-dark">{anuncio.descricao}</p>
+                                <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
+                                <span className="badge s-third">
+                                  <CIcon icon={(anuncio.tipo==="Doação") ? cilSmile : (anuncio.tipo==="Venda" ? cilDollar : cilLoopCircular)} /> {anuncio.tipo}
+                                </span>
+                              </Link>
                             </CCardBody>
                           </CCard>
                         )
@@ -149,21 +152,25 @@ const User = () =>{
             { (anuncios.length>0 && anuncios.length<3)  && (
               anuncios.map((item, index)=>{
                 return(
-                  <CRow key={index} className="justify-content-center">
+                  <CRow key={index} className="justify-content-center p-2">
                   {item.map((anuncio, i)=>{
                     return(
-                        <CCard className="p-0 m-3 d-none d-md-block card-anuncios-user" key={i}>
-                          <div className="img-ad">
-                            <img src={anuncio.imagem} alt="..."/>
-                          </div>
-                          <h4 className="card-title">{anuncio.titulo}</h4>
+                        <CCard className="p-0 m-3 card-anuncios-user" key={i}>
+                          <Link to={'/anuncio/'+anuncio.id} className="text-decoration-none">
+                            <div className="img-ad">
+                              <img src={anuncio.imagem} alt="..."/>
+                            </div>
+                            <h4 className="card-title text-dark">{anuncio.titulo}</h4>
+                          </Link>
 
                           <CCardBody>
-                            <p>{anuncio.descricao}</p>
-                            <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
-                            <span className="badge s-third">
-                              <CIcon icon={(anuncio.tipo==="Doação") ? cilSmile : (anuncio.tipo==="Venda" ? cilDollar : cilLoopCircular)} /> {anuncio.tipo}
-                            </span>
+                            <Link to={'/anuncio/'+anuncio.id}>
+                              <p className="text-dark">{anuncio.descricao}</p>
+                              <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
+                              <span className="badge s-third">
+                                <CIcon icon={(anuncio.tipo==="Doação") ? cilSmile : (anuncio.tipo==="Venda" ? cilDollar : cilLoopCircular)} /> {anuncio.tipo}
+                              </span>
+                            </Link>
                           </CCardBody>
                         </CCard>
                     )
