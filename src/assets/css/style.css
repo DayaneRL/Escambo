@@ -138,6 +138,18 @@ span.s-third{
     margin-left: 1.3rem;
 }
 
+.img-anuncio-show{
+    max-height: 400px;
+    border-radius: 10px;
+    min-width: 500px;
+    max-width: 600px;
+}
+
+.card-anuncios-user{
+    text-align: -webkit-center;
+    width: 400px;
+}
+
 @media (max-width: 420px){
     .col-qs{
         margin-left: 0;

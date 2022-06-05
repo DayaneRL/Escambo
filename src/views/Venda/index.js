@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { CCard, CCardBody, CRow,  CCarousel, CCarouselItem, CContainer } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
-import { cilLoopCircular } from "@coreui/icons";
+import { cilDollar } from "@coreui/icons";
 import {format} from "date-fns";
 
 import firebase from "../../services/firebaseConn";
@@ -106,7 +106,7 @@ const Venda = () =>{
                           <CCardBody>
                             <p>{anuncio.descricao}</p>
                             <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
-                            <span className="badge s-third"><CIcon icon={cilLoopCircular} /> {anuncio.tipo}</span>
+                            <span className="badge s-third"><CIcon icon={cilDollar} /> {anuncio.tipo}</span>
 
                             <hr/>
                             <div className="img-user">
@@ -134,7 +134,7 @@ const Venda = () =>{
                       <CCardBody>
                         <p>Placa de vídeo usada </p>
                         <span className="badge s-second">Tempo de uso:2 anos</span>
-                        <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
+                        <span className="ms-2 badge s-third"><CIcon icon={cilDollar} />Troca</span>
 
                         <hr/>
                         <div className="img-user">
@@ -152,7 +152,7 @@ const Venda = () =>{
                       <CCardBody>
                         <p>Mouse HP</p>
                         <span className="badge s-second">Tempo de uso: 1 ano</span>
-                        <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
+                        <span className="ms-2 badge s-third"><CIcon icon={cilDollar} />Troca</span>
 
                         <hr/>
                         <div className="img-user">

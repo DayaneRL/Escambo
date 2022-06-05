@@ -1,14 +1,13 @@
 import React, {useState, useEffect} from "react";
 import { CCard, CCardBody, CRow,  CCarousel, CCarouselItem, CContainer } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
-import { cilLoopCircular } from "@coreui/icons";
+import { cilSmile } from "@coreui/icons";
 
 import {format} from "date-fns";
 import firebase from "../../services/firebaseConn";
 const url = firebase.firestore().collection('anuncios').where('tipo','==','Doação').orderBy('created_at', 'desc');
 
 const Doacao = () =>{
-
   const [anuncios, setAnuncios] = useState([]);
   const [loading, setLoading] = useState(true);
   
@@ -106,7 +105,7 @@ const Doacao = () =>{
                           <CCardBody>
                             <p>{anuncio.descricao}</p>
                             <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
-                            <span className="badge s-third"><CIcon icon={cilLoopCircular} /> {anuncio.tipo}</span>
+                            <span className="badge s-third"><CIcon icon={cilSmile} /> {anuncio.tipo}</span>
 
                             <hr/>
                             <div className="img-user">
@@ -133,7 +132,7 @@ const Doacao = () =>{
                       <CCardBody>
                         <p>Placa de vídeo usada </p>
                         <span className="badge s-second">Tempo de uso:2 anos</span>
-                        <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
+                        <span className="ms-2 badge s-third"><CIcon icon={cilSmile} />Troca</span>
 
                         <hr/>
                         <div className="img-user">
@@ -152,7 +151,7 @@ const Doacao = () =>{
                         <CCardBody>
                           <p>Mouse HP</p>
                           <span className="badge s-second">Tempo de uso: 1 ano</span>
-                          <span className="ms-2 badge s-third"><CIcon icon={cilLoopCircular} />Troca</span>
+                          <span className="ms-2 badge s-third"><CIcon icon={cilSmile} />Troca</span>
 
                           <hr/>
                           <div className="img-user">

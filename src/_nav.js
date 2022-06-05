@@ -10,7 +10,8 @@ import {
   cilLoopCircular,
   cilChart,
   cilPlus,
-  cilUser
+  cilUser,
+  cilBadge
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -78,20 +79,17 @@ const _nav = [
     icon: <CIcon icon={cilChatBubble} customClassName="nav-icon" />,
     role: 'User',
   },
-  // {
-  //   component: CNavItem,
-  //   name: 'Widgets',
-  //   to: '/widgets',
-  //   icon: <CIcon icon={cilCalculator} customClassName="nav-icon" />,
-  //   badge: {
-  //     color: 'info',
-  //     text: 'NEW',
-  //   },
-  // },
   {
     component: CNavTitle,
     name: 'Usuário',
     role: 'User',
+  },
+  {
+    component: CNavItem,
+    name: 'Meus Anúncios',
+    to: '/meus-anuncios',
+    icon: <CIcon icon={cilBadge} customClassName="nav-icon" />,
+    role: 'User'
   },
   {
     component: CNavItem,
@@ -103,7 +101,6 @@ const _nav = [
   {
     component: CNavTitle,
     name: 'Convidado',
-    // icon: <CIcon icon={cilUser} customClassName="nav-icon" />,
     role: 'Guest',
   },
       {
@@ -120,16 +117,6 @@ const _nav = [
         to: '/register',
         role: 'Guest',
       },
-      // {
-      //   component: CNavItem,
-      //   name: 'Error 404',
-      //   to: '/404',
-      // },
-      // {
-      //   component: CNavItem,
-      //   name: 'Error 500',
-      //   to: '/500',
-      // },
 ]
 
 export default _nav
