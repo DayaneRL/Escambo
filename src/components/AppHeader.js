@@ -46,6 +46,9 @@ const AppHeader = () => {
           <CNavItem>
             <CNavLink to="/quem-somos" component={NavLink}>Quem Somos</CNavLink>
           </CNavItem>
+          <CNavItem>
+            <CNavLink to="/ecopontos" component={NavLink}>Ecopontos</CNavLink>
+          </CNavItem>
         </CHeaderNav>
         <CHeaderNav>
           <CNavItem>

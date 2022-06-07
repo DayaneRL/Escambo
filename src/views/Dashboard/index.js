@@ -76,7 +76,6 @@ const Dashboard = () =>{
           if(tipo==='destaque'){
             setAnunciosDestaque(anunciosDestaque => [...anunciosDestaque,...lista]);
             setLoadingDestaque(false);
-            console.log(anunciosDestaque);
           }else if(tipo==='troca'){
             setAnuncios(anuncios => [...anuncios,...lista]);
             setLoading(false);
@@ -87,10 +86,6 @@ const Dashboard = () =>{
 
     })
   }
-
-  anunciosDestaque && (
-    console.log(anunciosDestaque)
-  )
 
     return(
       <>

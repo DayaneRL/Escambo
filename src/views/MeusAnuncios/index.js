@@ -44,8 +44,10 @@ const MeusAnuncios = () => {
 
   async function updateState(snapshot){
     let lista = [];
+    let contador = 0;
 
     snapshot.forEach(async (doc)=>{
+        contador +=1;
       
         lista.push({
           id: doc.id,
@@ -59,9 +61,11 @@ const MeusAnuncios = () => {
           created_at: doc.data().created_at,
           createdFormated: format(doc.data().created_at.toDate(), 'dd/MM/yyyy'),
         })
-        
-        setAnuncios(anuncios => [...anuncios,...lista]);
-        setLoading(false);
+
+        if(contador===snapshot.size){
+            setAnuncios(anuncios => [...anuncios,...lista]);
+            setLoading(false);
+        }
     })
 
     if(snapshot.size===0){
@@ -97,10 +101,10 @@ const MeusAnuncios = () => {
                 {anuncios.map((item, index)=>{
                     return(
                         <CTableRow key={index}>
-                            <CTableHeaderCell scope="row">{index}</CTableHeaderCell>
+                            <CTableHeaderCell scope="row">{index+1}</CTableHeaderCell>
                             <CTableDataCell>{item.titulo}</CTableDataCell>
                             <CTableDataCell>{item.tipo}</CTableDataCell>
-                            <CTableDataCell className="d-none d-md-block">{item.createdFormated}</CTableDataCell>
+                            <CTableDataCell className="d-none d-md-block pt-3 pb-3">{item.createdFormated}</CTableDataCell>
                             <CTableDataCell>
                                 <Link to={'/anuncio/'+item.id} color="secondary" className="btn color-azul text-white text-decoration-none">
                                     <CIcon icon={cilMagnifyingGlass} /> Visualizar

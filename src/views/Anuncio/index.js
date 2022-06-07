@@ -30,6 +30,7 @@ const Anuncio = () =>{
             tipo: snapshot.data().tipo,
             tempo: snapshot.data().tempo,
             imagem: snapshot.data().imagem,
+            valor: (snapshot.data().valor) ? snapshot.data().valor : '',
             user: value.data(),
             created_at: snapshot.data().created_at,
             createdFormated: format(snapshot.data().created_at.toDate(), 'dd/MM/yyyy'),
@@ -88,7 +89,14 @@ const Anuncio = () =>{
               <span className="ms-3 badge s-third">
                 <CIcon icon={iconTipo} /> {anuncios.tipo}
               </span>
-              <br/><br/><hr/>
+                <br/>
+                {anuncios.valor && (
+                  <h4 className="mt-2 color-link">R$ {anuncios.valor}</h4>
+                )}
+                {!anuncios.valor && (
+                  <br/>
+                )}
+              <hr/>
               <span className="text-secondary">ANUNCIANTE</span>
               <div className="img-user mt-2">
                 <img src={anuncios.user.avatarUrl} alt="user"/>
@@ -96,7 +104,7 @@ const Anuncio = () =>{
                   {anuncios.user.nome}
                 </Link>
               </div>
-              <br/><hr/>
+              <hr/>
               {((user && user.uid!==anuncios.user_id)) && (
                 <>
                   <span className="text-secondary">Tem interesse?</span>
@@ -106,6 +114,15 @@ const Anuncio = () =>{
                   </Link>
                 </>
               )}
+               {(!user) && (
+                 <>
+                  <span className="text-secondary">Tem interesse?</span>
+                  <br/>
+                  <Link to={'/login'} color="secondary" className="btn color-azul text-white mt-2 text-decoration-none">
+                      Iniciar Chat
+                  </Link>
+                </>
+               )}
             </CCol>
           </CRow>
         </CCard>

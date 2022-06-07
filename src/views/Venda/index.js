@@ -44,6 +44,7 @@ const Venda = () =>{
           tipo: doc.data().tipo,
           tempo: doc.data().tempo,
           imagem: doc.data().imagem,
+          valor: (doc.data().valor) ? doc.data().valor : '',
           user: value.data(),
           created_at: doc.data().created_at,
           createdFormated: format(doc.data().created_at.toDate(), 'dd/MM/yyyy'),
@@ -110,7 +111,8 @@ const Venda = () =>{
                             <Link to={'/anuncio/'+anuncio.id}>
                               <p className="text-dark">{anuncio.descricao}</p>
                               <span className="badge s-second">Tempo de uso: {anuncio.tempo}</span><br/>
-                              <span className="badge s-third"><CIcon icon={cilDollar} /> {anuncio.tipo}</span>
+                              <span className="badge s-third"><CIcon icon={cilDollar} /> {anuncio.tipo}</span><br/>
+                              <h5>R$ {anuncio.valor}</h5>
                             </Link>
 
                             <hr/>

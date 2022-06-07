@@ -1,7 +1,7 @@
 import React, { useState,useContext } from "react";
 import { CCard, CCardBody, CRow,  CCol, CInputGroup,CInputGroupText,CFormInput, CFormTextarea,CFormSelect,CFormLabel, CButton } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
-import { cilClock, cilJustifyLeft, cilList, cilText } from "@coreui/icons";
+import { cilClock, cilDollar, cilJustifyLeft, cilList, cilText } from "@coreui/icons";
 import firebase from '../../services/firebaseConn';
 import { AuthContext } from "../../contexts/auth";
 import { toast } from "react-toastify";
@@ -15,6 +15,8 @@ const CadastrarAnuncio = () =>{
     const [imagem, setImagem] =useState('');
     // const [imagemUrl,setImagemUrl] = useState(null);
     const [saveButton, setSaveButton] = useState(true);
+    const [venda, setVenda] = useState(false);
+    const [valor, setValor] = useState('');
 
     const {user} = useContext(AuthContext);
 
@@ -30,6 +32,7 @@ const CadastrarAnuncio = () =>{
                 descricao: descricao,
                 tipo: tipoSelected,
                 tempo: tempo,
+                valor: valor,
                 imagem: null,
                 user_id: user.uid
             })
@@ -57,6 +60,8 @@ const CadastrarAnuncio = () =>{
         setTipo('');
         setTipoSelected(0);
         setImagem('');
+        setVenda(false);
+        setValor('');
         // setImagemUrl(null);
     }
 
@@ -93,6 +98,13 @@ const CadastrarAnuncio = () =>{
                 setImagem(null);
                 return null;
             }
+        }
+    }
+
+    function handleTipo(e){
+        setTipoSelected(e.target.value);
+        if(e.target.value==="Venda"){
+            setVenda(true);
         }
     }
     
@@ -139,7 +151,7 @@ const CadastrarAnuncio = () =>{
                             <CInputGroupText>
                                 <CIcon icon={cilList} />
                             </CInputGroupText>
-                            <CFormSelect aria-label="Default select example" onChange={(e)=>setTipoSelected(e.target.value)}>
+                            <CFormSelect aria-label="Default select example" onChange={(e)=>handleTipo(e)}>
                                 <option>Selecione...</option>
                                 {tipo.map( (item, index) => {
                                     return(
@@ -156,6 +168,21 @@ const CadastrarAnuncio = () =>{
                         <CFormLabel>Imagem</CFormLabel>
                         <CFormInput type="file" id="formFile" onChange={handleFile} value={imagem}/>
                     </CCol>
+
+                    {venda && (
+                        <>
+                        <CCol md={4}>
+                            <CFormLabel>Valor</CFormLabel>
+                            <CInputGroup className="mb-3">
+                                <CInputGroupText>
+                                    <CIcon icon={cilDollar} />
+                                </CInputGroupText>
+                                <CFormInput placeholder="Ex: 127,00" value={valor} onChange={(e)=>setValor(e.target.value)}/>
+                            </CInputGroup>
+                        </CCol>
+                        <CCol md={8}></CCol>
+                        </>
+                    )}
                 </CRow>
                 <div className="text-end mt-4">
                     <CButton color="success text-white" className="m-2" disabled={saveButton === false} onClick={Register}>Cadastrar</CButton>

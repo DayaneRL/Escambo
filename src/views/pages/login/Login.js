@@ -77,7 +77,7 @@ const Login = () => {
                   </CForm>
                 </CCardBody>
               </CCard>
-              <CCard className="text-white color-primary py-5" style={{ width: '44%' }}>
+              <CCard className="text-white color-primary py-5 d-none d-md-block " style={{ width: '44%' }}>
                 <CCardBody className="text-center">
                   <div>
                     <h2>Cadastre-se</h2>

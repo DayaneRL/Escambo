@@ -105,10 +105,11 @@ const Perfil = () =>{
 
   function sairPerfil(){
     sair();
-    if(loadingAuth==false && !signed){
-        navigate("../dashboard", { replace: true });
-    }
   }
+
+    {!user &&(
+    navigate("../dashboard", { replace: true })
+    )}
 
     return(
       <>

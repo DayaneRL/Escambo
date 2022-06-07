@@ -3,6 +3,7 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/Dashboard'))
 const Graficos = React.lazy(() => import('./views/Graficos'))
 const QuemSomos = React.lazy(() => import('./views/QuemSomos'))
+const Ecopontos = React.lazy(() => import('./views/Ecopontos'))
 const Troca = React.lazy(() => import('./views/Troca'))
 const Doacao = React.lazy(() => import('./views/Doacao'))
 const Venda = React.lazy(() => import('./views/Venda'))
@@ -17,7 +18,8 @@ const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/graficos', name: 'Graficos', element: Graficos },
-  { path: '/quem-somos', name: 'QuemSomos', element: QuemSomos },
+  { path: '/quem-somos', name: 'Quem Somos', element: QuemSomos },
+  { path: '/ecopontos', name: 'Ecopontos', element: Ecopontos },
   { path: '/troca', name: 'Troca', element: Troca },
   { path: '/doacao', name: 'Doacao', element: Doacao },
   { path: '/venda', name: 'Venda', element: Venda },
