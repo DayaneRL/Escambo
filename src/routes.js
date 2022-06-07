@@ -26,6 +26,7 @@ const routes = [
   { path: '/chat', name: 'Chat', element: Chat },
   { path: '/perfil', name: 'Meu Perfil', element: Perfil },
   { path: '/cadastrar-anuncio', name: 'Cadastrar Anuncio', element: CadastrarAnuncio },
+  { path: '/cadastrar-anuncio/:id', name: 'Editar Anuncio', element: CadastrarAnuncio },
   { path: '/meus-anuncios', name: 'Meus Anuncios', element: MeusAnuncios },
   { path: "/anuncio/", name: 'Anuncio', element: Anuncio },
   { path: "/anuncio/:id", name: 'Visualizar', element: Anuncio },

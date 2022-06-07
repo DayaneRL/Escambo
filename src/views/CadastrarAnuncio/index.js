@@ -1,12 +1,16 @@
-import React, { useState,useContext } from "react";
+import React, { useState,useContext, useEffect } from "react";
 import { CCard, CCardBody, CRow,  CCol, CInputGroup,CInputGroupText,CFormInput, CFormTextarea,CFormSelect,CFormLabel, CButton } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
 import { cilClock, cilDollar, cilJustifyLeft, cilList, cilText } from "@coreui/icons";
 import firebase from '../../services/firebaseConn';
 import { AuthContext } from "../../contexts/auth";
 import { toast } from "react-toastify";
+import { useParams, useNavigate } from "react-router-dom";
 
 const CadastrarAnuncio = () =>{
+    const params = useParams();
+    let navigate = useNavigate();
+
     const [titulo, setTitulo] =useState('');
     const [descricao, setDescricao] =useState('');
     const [tempo, setTempo] =useState('');
@@ -17,8 +21,28 @@ const CadastrarAnuncio = () =>{
     const [saveButton, setSaveButton] = useState(true);
     const [venda, setVenda] = useState(false);
     const [valor, setValor] = useState('');
+    const [udpate, setUpdate] = useState(false);
 
     const {user} = useContext(AuthContext);
+
+    useEffect(async ()=> {
+        if(params.id){
+            setUpdate(true);
+            await firebase.firestore().collection('anuncios').doc(params.id).get()
+            .then((snapshot)=>{
+                console.log(snapshot);
+                setTitulo(snapshot.data().titulo);
+                setDescricao(snapshot.data().descricao);
+                setTempo(snapshot.data().tempo);
+                setTipoSelected(snapshot.data().tipo);
+                setTipo([snapshot.data().tipo]);
+                if(snapshot.data().tipo === "Venda"){
+                    setVenda(true);
+                    setValor(snapshot.data().valor);
+                }
+            })
+        }
+    }, []);
 
     async function Register(e){
         e.preventDefault();
@@ -53,12 +77,41 @@ const CadastrarAnuncio = () =>{
         }
     }
 
+    
+    async function Edit(e){
+        e.preventDefault();
+        
+        if(titulo!=='' && descricao!=='' && tempo !=='' && tipoSelected!==''){
+            setSaveButton(false);
+
+            await firebase.firestore().collection('anuncios').doc(params.id)
+            .update({
+                titulo: titulo,
+                descricao: descricao,
+                tipo: tipoSelected,
+                tempo: tempo,
+                valor: valor,
+            })
+            .then(()=>{
+                if(imagem){  uploadImage(params.id); }
+                toast.success(`Anuncio editado com sucesso`);
+                limpaCampos();
+                navigate("../meus-anuncios", { replace: true });
+            })
+            .catch((error)=>{
+                toast.error('Erro ao registrar, tente mais tarde');
+                console.log(error);
+            })
+        }
+
+        setSaveButton(true);
+    }
+
     function limpaCampos(){
         setTitulo('');
         setDescricao('');
         setTempo('');
-        setTipo('');
-        setTipoSelected(0);
+        setTipoSelected('');
         setImagem('');
         setVenda(false);
         setValor('');
@@ -112,8 +165,10 @@ const CadastrarAnuncio = () =>{
       <>
         <CCard className="mb-4 p-3">
             <div className="text-center mt-2">
-                <h2> Cadastrar Anuncio </h2>
-                <p className="text-medium-emphasis">Cadastre um anuncio para trocar, doar ou vender sua peça</p>
+                <h2> {(udpate)? 'Editar':'Cadastrar'} Anuncio </h2>
+                {!udpate && (
+                    <p className="text-medium-emphasis">Cadastre um anuncio para trocar, doar ou vender sua peça</p>
+                )}
             </div>
                     
             <CCardBody>
@@ -151,8 +206,8 @@ const CadastrarAnuncio = () =>{
                             <CInputGroupText>
                                 <CIcon icon={cilList} />
                             </CInputGroupText>
-                            <CFormSelect aria-label="Default select example" onChange={(e)=>handleTipo(e)}>
-                                <option>Selecione...</option>
+                            <CFormSelect aria-label="Default select example" onChange={(e)=>handleTipo(e)} disabled={udpate}>
+                                {/* <option>Selecione...</option> */}
                                 {tipo.map( (item, index) => {
                                     return(
                                         <option key={index} value={item}>
@@ -164,8 +219,9 @@ const CadastrarAnuncio = () =>{
                             </CFormSelect>
                         </CInputGroup>
                     </CCol>
+                   
                     <CCol md={4}>
-                        <CFormLabel>Imagem</CFormLabel>
+                        <CFormLabel>Nova Imagem</CFormLabel>
                         <CFormInput type="file" id="formFile" onChange={handleFile} value={imagem}/>
                     </CCol>
 
@@ -185,7 +241,7 @@ const CadastrarAnuncio = () =>{
                     )}
                 </CRow>
                 <div className="text-end mt-4">
-                    <CButton color="success text-white" className="m-2" disabled={saveButton === false} onClick={Register}>Cadastrar</CButton>
+                    <CButton color="success text-white" className="m-2" disabled={saveButton === false} onClick={(udpate)?Edit : Register}>{udpate? 'Salvar':'Cadastrar'}</CButton>
                     <CButton color="secondary text-white">Cancelar</CButton>
                 </div>
             </CCardBody>

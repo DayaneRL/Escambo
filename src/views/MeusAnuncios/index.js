@@ -1,8 +1,6 @@
 import React, {useEffect, useState, useContext} from "react";
 import { 
-    CCard, 
-    CCardBody, 
-    CRow,  
+    CCard,  
     CTable, 
     CTableHead, 
     CTableRow, 
@@ -10,19 +8,21 @@ import {
     CTableBody,
     CTableDataCell,
     CContainer,
-    CAvatar, 
+    CButton, 
 } from '@coreui/react'
 import CIcon from "@coreui/icons-react";
 import { Link } from 'react-router-dom'
-import { cilMagnifyingGlass } from "@coreui/icons";
+import { cilMagnifyingGlass, cilPencil, cilTrash } from "@coreui/icons";
 import { AuthContext } from "../../contexts/auth";
 import {format} from "date-fns";
 import firebase from "../../services/firebaseConn";
+import Modal from "./modal.js";
 
 const MeusAnuncios = () => {
   const {user} = useContext(AuthContext);
   const [anuncios, setAnuncios] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [ modal, setModal] = useState(false);
   
   useEffect(()=>{
     async function loadAnuncios(){
@@ -107,8 +107,14 @@ const MeusAnuncios = () => {
                             <CTableDataCell className="d-none d-md-block pt-3 pb-3">{item.createdFormated}</CTableDataCell>
                             <CTableDataCell>
                                 <Link to={'/anuncio/'+item.id} color="secondary" className="btn color-azul text-white text-decoration-none">
-                                    <CIcon icon={cilMagnifyingGlass} /> Visualizar
+                                    <CIcon icon={cilMagnifyingGlass} />
                                 </Link>  
+                                <Link to={'/cadastrar-anuncio/'+item.id} color="success" className="btn btn-secondary ms-2 text-white text-decoration-none">
+                                    <CIcon icon={cilPencil} />
+                                </Link>  
+                                <CButton onClick={()=>setModal(!modal)} color="danger" className="btn btn-danger ms-2 text-white text-decoration-none">
+                                    <CIcon icon={cilTrash} />
+                                </CButton>  
                             </CTableDataCell>
                         </CTableRow>
                     );
@@ -116,6 +122,7 @@ const MeusAnuncios = () => {
                 </CTableBody>
             </CTable>
             
+            {modal && (<Modal visible={modal} setVisible={()=>setModal(!modal)}/>)}
         </CCard>
     )
 }
