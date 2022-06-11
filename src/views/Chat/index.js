@@ -25,7 +25,7 @@ import { cilLoopCircular, cilSend } from "@coreui/icons";
 import {AuthContext} from '../../contexts/auth'
 
 import avatar8 from './../../assets/images/avatars/8.jpg'
-import avatar7 from './../../assets/images/avatars/7.jpg'
+import avatar2 from './../../assets/images/avatars/2.jpg'
 import avatar6 from './../../assets/images/avatars/6.jpg'
 import avatar5 from './../../assets/images/avatars/5.jpg'
 import avatar4 from './../../assets/images/avatars/4.jpg'
@@ -92,9 +92,9 @@ const Chat = () => {
                                     <CListGroupItem className="d-flex justify-content-between align-items-center"
                                     component="a" href="#">
                                         <div>
-                                            <CAvatar src={avatar7} size="md" /> 
+                                            <CAvatar src={avatar2} size="md" /> 
                                             <label className="px-2">
-                                                Mariana Lima
+                                                Paulo Nogueira
                                             </label> 
                                         </div>
                                         <CBadge color="primary" shape="rounded-pill">

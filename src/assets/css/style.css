@@ -274,3 +274,10 @@ span.s-third{
         bottom: -5% !important;
     }
 }
+
+@media (max-width: 1400px){
+    .img-anuncio-show{
+        min-width: 450px !important;
+        max-width: 480px !important;
+    }
+}
